@@ -1,5 +1,6 @@
 package com.itheima.mp.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.itheima.mp.domain.po.User;
@@ -79,5 +80,15 @@ class UserMapperTest {
                 .setSql("balance = balance-200") //拼接语句
                 .in("id",ids);
         userMapper.update(null,uw);
+    }
+    @Test
+    void testLambdaQueryWrapper(){
+        List<Long> ids = List.of(1L, 2L, 4L);
+        LambdaQueryWrapper<User> qw = new LambdaQueryWrapper<User>()
+                .select(User::getId,User::getUsername,User::getInfo,User::getBalance)
+                .like(User::getUsername,"o")
+                .ge(User::getBalance,1000);
+        List<User> users = userMapper.selectList(qw);
+        users.forEach(System.out::println);
     }
 }
