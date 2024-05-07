@@ -91,4 +91,12 @@ class UserMapperTest {
         List<User> users = userMapper.selectList(qw);
         users.forEach(System.out::println);
     }
+    @Test
+    void testCustomSqlUpdate(){
+        List<Long> ids = List.of(1L, 2L, 4L);
+        int amount = 200;
+        QueryWrapper<User> qw = new QueryWrapper<User>().in("id",ids);
+//        调用自定义方法
+        userMapper.updateBalanceByIds(qw,amount);
+    }
 }
